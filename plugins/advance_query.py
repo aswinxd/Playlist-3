@@ -9,7 +9,6 @@ from plugins.autoDelete import convert_time
 from database.database import kingdb
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto, ReplyKeyboardMarkup, ReplyKeyboardRemove    
 
-
 async def fileSettings(getfunc, setfunc=None, delfunc=False) :
     btn_mode, txt_mode, pic_mode = '❌', off_txt, off_pic
     del_btn_mode = 'Enable mode true'
@@ -36,7 +35,6 @@ async def fileSettings(getfunc, setfunc=None, delfunc=False) :
     except Exception as e:
         print(f"Error occured at [fileSettings(getfunc, setfunc=None, delfunc=False)] : {e}")
 
-#Provide or Make Button by takiing required modes and data
 def buttonStatus(pc_data: str, hc_data: str, cb_data: str) -> list:
     button = [
         [
@@ -44,7 +42,7 @@ def buttonStatus(pc_data: str, hc_data: str, cb_data: str) -> list:
             InlineKeyboardButton(f'Hide caption: {hc_data}', callback_data='hc')
         ],
         [
-            InlineKeyboardButton(f'Channel captipn: {cb_data}', callback_data='cb'), 
+            InlineKeyboardButton(f'Channel caption: {cb_data}', callback_data='cb'), 
             InlineKeyboardButton(f'Set button', callback_data='setcb')
         ],
         [

@@ -152,7 +152,7 @@ async def user_setting_commands(client: Client, message: Message):
     await message.reply(text=USER_CMD_TXT, reply_markup=InlineKeyboardMarkup(button), quote=True)
 
     
-HELP = ""
+HELP = "https://graph.org/file/212c92746e334064f140c-4e782662d47feee3cb.jpg"
 @Bot.on_message(filters.command('help') & filters.private & ~banUser)
 async def help(client: Client, message: Message):
     buttons = [

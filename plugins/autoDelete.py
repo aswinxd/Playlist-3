@@ -31,6 +31,7 @@ def convert_time(duration_seconds: int) -> str:
 DEL_MSG = """⚠️ Due to ban some issues
 Files will be deleted within <a href="https://t.me/{username}">{time}</a>. So forward this to another group"""
 
+
 async def auto_del_notification(bot_username, msg, delay_time, transfer): 
     temp = await msg.reply_text(DEL_MSG.format(username=bot_username, time=convert_time(delay_time)), disable_web_page_preview = True) 
 
@@ -40,7 +41,7 @@ async def auto_del_notification(bot_username, msg, delay_time, transfer):
             try:
                 name = "Get Again"
                 link = f"https://t.me/{bot_username}?start={transfer}"
-                button = [[InlineKeyboardButton(text=name, url=link), InlineKeyboardButton(text="Close ", callback_data = "close")]]
+                button = [[InlineKeyboardButton(text=name, url=link), InlineKeyboardButton(text="Get full collection", callback_data = "about")]]
 
                 await temp.edit_text(text=f"Files was deleted \n If you want files again click here [<a href={link}>{name}</a>] Click below message or close with message", reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True)
 

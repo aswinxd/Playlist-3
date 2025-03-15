@@ -1,7 +1,7 @@
-on_pic = "https://telegra.ph/file/5593d624d11d92bceb48e.jpg"
-off_pic = "https://telegra.ph/file/0d9e590f62b63b51d4bf9.jpg"
-files_cmd_pic = "https://telegra.ph/file/d44f46054250a73053614.jpg"
-autodel_cmd_pic = "https://telegra.ph/file/a64533814021b40057ccd.jpg"
+on_pic = "https://graph.org/file/2834d161111dfc916efac-1f0e4ea5ac1624bafc.jpg"
+off_pic = "https://graph.org/file/2834d161111dfc916efac-1f0e4ea5ac1624bafc.jpg"
+files_cmd_pic = "https://graph.org/file/9857bdab22a1540153879-45f5141823c9228c50.jpg"
+autodel_cmd_pic = "https://graph.org/file/212c92746e334064f140c-4e782662d47feee3cb.jpg"
 
 # Start message
 START_MSG = """Hey {mention},  
@@ -36,7 +36,26 @@ To access files, you must be subscribed to the required channels.
 For help, use: /help"""
 
 
-ABOUT_TXT = """My name: {botname}
+ABOUT_TXT = """ **GET FULL COLLECTION**
+നിങ്ങൾക്ക് 10  ചാനൽ 20 ചാനൽ എന്നും പറഞ്ഞു തരാൻ ഞങ്ങൾക്ക് താൽപര്യമില്ല നിങ്ങൾ മുടക്കുന്ന പൈസക്ക് നിങ്ങൾക്ക് ആവശ്യം  എല്ലാ തരം തുണ്ടുകളും (No cp &  Rp
+
+❄️ Daily updates  
+❄️ മലയാളം leaked 💦
+❄️ മലയാളം ott 18+ webseries 
+❄️ Kerala acting video's 💦
+❄️ Xvideo desi 
+❄️ Tamil videos 
+❄️ Infulncer leaked content 
+❄️ International selected video 🌟
+
+🐳എല്ലാ വിധ വീഡിയോസ് ഒറ്റ ഗ്രൂപ്പിൽ നിങ്ങൾക്ക് എന്നും കിട്ടി ക്കൊണ്ട് ഇരിക്കും
+വേണ്ടവർ ഒരു മാസം എടുത്ത് നോക്ക് 😉
+
+💎CONTACT US - @VIP_S3LL3R
+
+❗Join Below for demo
+
+https://t.me/+IvjmUVUsFBQ4N2U0
 """
 
 SETTING_TXT = """Configurations
@@ -79,13 +98,13 @@ USER_CMD_TXT = """User Setting Commands:
 /del_admins : Delete one or multiple user IDs from admin (owner)"""
 
 
-RFSUB_CMD_TXT = """<b> REQUEST FSUB SETTINGS 🚦
+RFSUB_CMD_TXT = """<b> REQUEST FSUB SETTINGS
 
 <b> Request Fsub Mode: {req_mode}</b>
 
 Click the buttons below to change settings.</b>"""
 
-RFSUB_MS_TXT = """<b> REQUEST FSUB LIST 🚥
+RFSUB_MS_TXT = """<b> REQUEST FSUB LIST
 
  expandable>{reqfsub_list}
 

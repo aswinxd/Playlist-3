@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 
 
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "8141368818:AAFQXS4KI1R7Nm4dANZ8nje1wTpCUCE2_Og")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "8141368818:AAIje1wTpCUCE2_Og")
 
 
 APP_ID = int(os.environ.get("APP_ID", "12799559"))
@@ -32,7 +32,7 @@ DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://mdalizadeh16:lavos@cluste
 
 DB_NAME = os.environ.get("DATABASE_NAME", "PLaylist-1")
 
-TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "20"))
+TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "10"))
 
 PICS = (os.environ.get("PICS", "https://graph.org/file/9857bdab22a1540153879-45f5141823c9228c50.jpg")).split() #Required
 

@@ -34,7 +34,7 @@ DB_NAME = os.environ.get("DATABASE_NAME", "PLaylist-1")
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "20"))
 
-PICS = (os.environ.get("PICS", "https://graph.org/file/212c92746e334064f140c-4e782662d47feee3cb.jpg  https://telegra.ph/file/ad3486519fd59f73f7f46.jpg https://telegra.ph/file/8d4867e3d7d8e8db70f73.jpg")).split() #Required
+PICS = (os.environ.get("PICS", "https://graph.org/file/9857bdab22a1540153879-45f5141823c9228c50.jpg")).split() #Required
 
 
 CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)

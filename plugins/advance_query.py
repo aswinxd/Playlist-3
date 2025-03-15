@@ -348,7 +348,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
         
             try:
                 on = off = ""
-                if client.REQFSUB: #await kingdb.get_request_forcesub():
+                if client.REQFSUB: 
                     await kingdb.set_request_forcesub(False)
                     client.REQFSUB = False
                     off = "🔴"
@@ -371,7 +371,6 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
     elif data == 'more_settings':
         if await authoUser(query, query.from_user.id, owner_only=True) :
-            #await query.answer("Processing...")
             try:
                 await query.message.edit_text("<b>Pʟᴇᴀsᴇ wᴀɪᴛ !\n\n<i>🔄 Rᴇᴛʀɪᴇᴠɪɴɢ ᴀʟʟ Sᴇᴛᴛɪɴɢs...</i></b>")
                 LISTS = "Eᴍᴘᴛʏ Rᴇǫᴜᴇsᴛ FᴏʀᴄᴇSᴜʙ Cʜᴀɴɴᴇʟ Lɪsᴛ !?"

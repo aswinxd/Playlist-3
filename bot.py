@@ -1,5 +1,3 @@
-# +++ Made By King [telegram username: @Shidoteshika1] +++
-
 from aiohttp import web
 from plugins import web_server
 
@@ -11,7 +9,7 @@ import sys
 from datetime import datetime
 from database.database import kingdb
 from pyrogram.types import InlineKeyboardButton
-from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, CHANNEL_ID, PORT, OWNER_ID
+from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, CHANNEL_ID, PORT, OWNER_ID   
 
 class Bot(Client):
     def __init__(self):
@@ -57,16 +55,16 @@ class Bot(Client):
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Aᴅᴠᴀɴᴄᴇ Fɪʟᴇ-Sʜᴀʀɪɴɢ ʙᴏᴛV3 Mᴀᴅᴇ Bʏ ➪ @Shidoteshika1 [Tᴇʟᴇɢʀᴀᴍ Usᴇʀɴᴀᴍᴇ]")
+        self.LOGGER(__name__).info(f"HAHAHA ANDI UAYAYAYA")
         self.LOGGER(__name__).info(f"{self.name} Bot Running..!")
         self.LOGGER(__name__).info(f"OPERATION SUCCESSFULL ✅")
-        #web-response
+   
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
 
-        try: await self.send_message(OWNER_ID, text = f"<b>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ ♻️</b>")
+        try: await self.send_message(OWNER_ID, text = f"restarted...")
         except: pass
 
 
@@ -79,7 +77,7 @@ class Bot(Client):
             self.REQ_FSUB_BUTTONS['normal'].clear()
             self.REQ_FSUB_BUTTONS['request'].clear()
             
-            return f"<b>❌ Nᴏ Fᴏʀᴄᴇ Sᴜʙ Cʜᴀɴɴᴇʟ Fᴏᴜɴᴅ !</b>"
+            return f"botfather"
 
         valid_chat_ids, global_buttons, chnl_buttons, req_chnl_buttons = [], [], [], {}
         channel_infos = []

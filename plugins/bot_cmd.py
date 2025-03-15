@@ -14,18 +14,16 @@ from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 from database.database import kingdb 
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
-REPLY_ERROR = """Usᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴀs ᴀ ʀᴇᴘʟʏ ᴛᴏ ᴀɴʏ Tᴇʟᴇɢʀᴀᴍ ᴍᴇssᴀɢᴇ ᴡɪᴛʜᴏᴜᴛ ᴀɴʏ sᴘᴀᴄᴇs."""
-# Define a global variable to store the cancel state
+REPLY_ERROR = """REPALAAAYSSSSSSSSSS"""
+
 is_canceled = False
 cancel_lock = Lock()
 
-#Settings for banned users..
+
 @Bot.on_message(banUser & filters.private & filters.command(['start', 'help']))
 async def handle_banuser(client, message):
-    return await message.reply(text=BAN_TXT, message_effect_id=5046589136895476101,)#💩)
+    return await message.reply(text=BAN_TXT)
 
-#--------------------------------------------------------------[[ADMIN COMMANDS]]---------------------------------------------------------------------------#
-# Handler for the /cancel command
 @Bot.on_message(filters.command('cancel') & filters.private & is_admin)
 async def cancel_broadcast(client: Bot, message: Message):
     global is_canceled
@@ -54,20 +52,20 @@ async def send_text(client: Bot, message: Message):
         deleted = 0
         unsuccessful = 0
 
-        pls_wait = await message.reply("<i>Bʀᴏᴀᴅᴄᴀsᴛɪɴɢ Mᴇssᴀɢᴇ... Tʜɪs ᴡɪʟʟ ᴛᴀᴋᴇ sᴏᴍᴇ ᴛɪᴍᴇ.</i>")
+        pls_wait = await message.reply("Processing...")
         bar_length = 20
         final_progress_bar = "●" * bar_length
-        complete_msg = f"🤖 {broad_mode}BROADCAST COMPLETED ✅"
+        complete_msg = f" {broad_mode}BROADCAST COMPLETED ✅"
         progress_bar = ''
         last_update_percentage = 0
         percent_complete = 0
-        update_interval = 0.05  # Update progress bar every 5%
+        update_interval = 0.05 
 
         for i, chat_id in enumerate(query, start=1):
             async with cancel_lock:
                 if is_canceled:
                     final_progress_bar = progress_bar
-                    complete_msg = f"🤖 {broad_mode}BROADCAST CANCELED ❌"
+                    complete_msg = f" {broad_mode}BROADCAST CANCELED ❌"
                     break
             try:
                 await broadcast_msg.copy(chat_id, disable_notification=mode)
@@ -85,39 +83,31 @@ async def send_text(client: Bot, message: Message):
             except:
                 unsuccessful += 1
 
-            # Calculate percentage complete
             percent_complete = i / total
 
-            # Update progress bar
+   
             if percent_complete - last_update_percentage >= update_interval or last_update_percentage == 0:
                 num_blocks = int(percent_complete * bar_length)
                 progress_bar = "●" * num_blocks + "○" * (bar_length - num_blocks)
-    
-                # Send periodic status updates
+
                 status_update = f"""<b>🤖 {broad_mode}BROADCAST IN PROGRESS...
-
-<blockquote>⏳:</b> [{progress_bar}] <code>{percent_complete:.0%}</code></blockquote>
-
-<b>🚻 Tᴏᴛᴀʟ Usᴇʀs: <code>{total}</code>
-✅ Sᴜᴄᴄᴇssғᴜʟ: <code>{successful}</code>
-🚫 Bʟᴏᴄᴋᴇᴅ Usᴇʀs: <code>{blocked}</code>
-⚠️ Dᴇʟᴇᴛᴇᴅ Aᴄᴄᴏᴜɴᴛs: <code>{deleted}</code>
-❌ Uɴsᴜᴄᴄᴇssғᴜʟ: <code>{unsuccessful}</code></b>
+<b>Tᴏᴛᴀʟ Usᴇʀs: <code>{total}</code>
+Sᴜᴄᴄᴇssғᴜʟ: <code>{successful}</code>
+Bʟᴏᴄᴋᴇᴅ Usᴇʀs: <code>{blocked}</code>
+Dᴇʟᴇᴛᴇᴅ Aᴄᴄᴏᴜɴᴛs: <code>{deleted}</code>
+Uɴsᴜᴄᴄᴇssғᴜʟ: <code>{unsuccessful}</code></b>
 
 <i>➪ Tᴏ sᴛᴏᴘ ᴛʜᴇ ʙʀᴏᴀᴅᴄᴀsᴛɪɴɢ ᴄʟɪᴄᴋ: <b>/cancel</b></i>"""
                 await pls_wait.edit(status_update)
                 last_update_percentage = percent_complete
 
-        # Final status update
         final_status = f"""<b>{complete_msg}
 
-<blockquote>Dᴏɴᴇ:</b> [{final_progress_bar}] {percent_complete:.0%}</blockquote>
-
-<b>🚻 Tᴏᴛᴀʟ Usᴇʀs: <code>{total}</code>
-✅ Sᴜᴄᴄᴇssғᴜʟ: <code>{successful}</code>
-🚫 Bʟᴏᴄᴋᴇᴅ Usᴇʀs: <code>{blocked}</code>
-⚠️ Dᴇʟᴇᴛᴇᴅ Aᴄᴄᴏᴜɴᴛs: <code>{deleted}</code>
-❌ Uɴsᴜᴄᴄᴇssғᴜʟ: <code>{unsuccessful}</code></b>"""
+<b>Tᴏᴛᴀʟ Usᴇʀs: <code>{total}</code>
+Sᴜᴄᴄᴇssғᴜʟ: <code>{successful}</code>
+Bʟᴏᴄᴋᴇᴅ Usᴇʀs: <code>{blocked}</code>
+Dᴇʟᴇᴛᴇᴅ Aᴄᴄᴏᴜɴᴛs: <code>{deleted}</code>
+Uɴsᴜᴄᴄᴇssғᴜʟ: <code>{unsuccessful}</code></b>"""
         return await pls_wait.edit(final_status)
 
     else:
@@ -128,10 +118,10 @@ async def send_text(client: Bot, message: Message):
 
 @Bot.on_message(filters.command('status') & filters.private & is_admin)
 async def info(client: Bot, message: Message):   
-    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Cʟᴏsᴇ ✖️", callback_data = "close")]])
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Close ", callback_data = "close")]])
     
     start_time = time.time()
-    temp_msg = await message.reply("<b><i>Pʀᴏᴄᴇssɪɴɢ....</i></b>", quote=True)  # Temporary message
+    temp_msg = await message.reply("Processing...", quote=True)  
     end_time = time.time()
     
     # Calculate ping time in milliseconds
@@ -147,32 +137,27 @@ async def info(client: Bot, message: Message):
 
 @Bot.on_message(filters.command('cmd') & filters.private & is_admin)
 async def bcmd(bot: Bot, message: Message):        
-    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Cʟᴏsᴇ ✖️", callback_data = "close")]])
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Close ", callback_data = "close")]])
     await message.reply(text=CMD_TXT, reply_markup = reply_markup, quote= True)
     
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------#    
-
-#--------------------------------------------------------------[[NORMAL USER ACCESSIBLE COMMANDS]]----------------------------------------------------------------------#
-
 @Bot.on_message(filters.command('forcesub') & filters.private & ~banUser)
 async def fsub_commands(client: Client, message: Message):
-    button = [[InlineKeyboardButton("Cʟᴏsᴇ ✖️", callback_data="close")]]
+    button = [[InlineKeyboardButton("Close ", callback_data="close")]]
     await message.reply(text=FSUB_CMD_TXT, reply_markup=InlineKeyboardMarkup(button), quote=True)
 
 
 @Bot.on_message(filters.command('users') & filters.private & ~banUser)
 async def user_setting_commands(client: Client, message: Message):
-    button = [[InlineKeyboardButton("Cʟᴏsᴇ ✖️", callback_data="close")]]
+    button = [[InlineKeyboardButton("Close ", callback_data="close")]]
     await message.reply(text=USER_CMD_TXT, reply_markup=InlineKeyboardMarkup(button), quote=True)
 
     
-HELP = "https://graph.org//file/10f310dd6a7cb56ad7c0b.jpg"
+HELP = ""
 @Bot.on_message(filters.command('help') & filters.private & ~banUser)
 async def help(client: Client, message: Message):
     buttons = [
         [
-            InlineKeyboardButton("🤖 Oᴡɴᴇʀ", url=f"tg://openmessage?user_id={OWNER_ID}"), 
-            InlineKeyboardButton("🧑‍💻 Dᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/Shidoteshika1")
+            InlineKeyboardButton("@PlaylistUHD", url=f"t.me/PlaylistUHD"), 
         ]
     ]
     if SUPPORT_GROUP:
@@ -190,8 +175,7 @@ async def help(client: Client, message: Message):
                 id = message.from_user.id
             ),
             reply_markup = reply_markup,
-            message_effect_id = 5046509860389126442 #🎉
         )
     except Exception as e:
-        return await message.reply(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b>\n<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+        return await message.reply(f"ok moonji error {e}")
    

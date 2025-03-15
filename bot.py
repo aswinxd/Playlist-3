@@ -66,7 +66,7 @@ class Bot(Client):
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
 
-        try: await self.send_message(OWNER_ID, text = f"<b><blockquote>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ ♻️</blockquote></b>")
+        try: await self.send_message(OWNER_ID, text = f"<b>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ ♻️</b>")
         except: pass
 
 
@@ -79,7 +79,7 @@ class Bot(Client):
             self.REQ_FSUB_BUTTONS['normal'].clear()
             self.REQ_FSUB_BUTTONS['request'].clear()
             
-            return f"<b><blockquote>❌ Nᴏ Fᴏʀᴄᴇ Sᴜʙ Cʜᴀɴɴᴇʟ Fᴏᴜɴᴅ !</b></blockquote>"
+            return f"<b>❌ Nᴏ Fᴏʀᴄᴇ Sᴜʙ Cʜᴀɴɴᴇʟ Fᴏᴜɴᴅ !</b>"
 
         valid_chat_ids, global_buttons, chnl_buttons, req_chnl_buttons = [], [], [], {}
         channel_infos = []
@@ -110,20 +110,20 @@ class Bot(Client):
 
                 global_buttons.append(temp_butn)
 
-                channel_infos.append(f"<b><blockquote>NAME: <a href = {channel_link}>{channel_name}</a>\n(ID: <code>{chat_id}</code>)</blockquote></b>\n\n")
+                channel_infos.append(f"<b>NAME: <a href = {channel_link}>{channel_name}</a>\n(ID: <code>{chat_id}</code>)</b>\n\n")
 
                 valid_chat_ids.append(chat_id)
                     
             except Exception as e:
                 print(f"Unable to update the {chat_id}, Reason: {e}")
-                channel_infos.append(f"<blockquote expandable><b>ID: <code>{chat_id}</code>\n<i>! Eʀʀᴏʀ ᴏᴄᴄᴜʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ...</i>\n\nRᴇᴀsᴏɴ:</b> {e}</blockquote>\n\n")
+                channel_infos.append(f" expandable><b>ID: <code>{chat_id}</code>\n<i>! Eʀʀᴏʀ ᴏᴄᴄᴜʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ...</i>\n\nRᴇᴀsᴏɴ:</b> {e}\n\n")
                 
                 continue
         
         invalid_ids = len(chat_ids) - len(valid_chat_ids)
 
         if invalid_ids:
-            channel_infos.append(f"<blockquote expandable><b>⚠️ WARNING:</b> {invalid_ids} ᴄʜᴀɴɴᴇʟ IDs ᴍᴀʏ ᴀᴘᴘᴇᴀʀ ɪɴᴠᴀʟɪᴅ, ᴏʀ ᴛʜᴇ ʙᴏᴛ ᴍᴀʏ ɴᴏᴛ ʜᴀᴠᴇ ᴛʜᴇ ɴᴇᴄᴇssᴀʀʏ ᴘᴇʀᴍɪssɪᴏɴs. {invalid_ids} Cʜᴀɴɴᴇʟs cᴀɴ ɴᴏᴛ ғᴜɴᴄᴛɪᴏɴ ᴀs 'FᴏʀᴄᴇSᴜʙ' ʙᴜᴛᴛᴏɴ. Tᴏ ᴇɴᴀʙʟᴇ ᴛʜᴇ 'FᴏʀᴄᴇSᴜʙ' ғᴜɴᴄᴛɪᴏɴᴀʟɪᴛʏ ғᴏʀ {invalid_ids} ᴄʜᴀɴɴᴇʟs, ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴠᴀʟɪᴅ IDs ᴏʀ ᴇɴsᴜʀᴇ ᴛʜᴇ ʙᴏᴛ ʜᴀs ᴛʜᴇ ᴀᴘᴘʀᴏᴘʀɪᴀᴛᴇ ᴘᴇʀᴍɪssɪᴏɴs.</blockquote>")
+            channel_infos.append(f" expandable><b>⚠️ WARNING:</b> {invalid_ids} ᴄʜᴀɴɴᴇʟ IDs ᴍᴀʏ ᴀᴘᴘᴇᴀʀ ɪɴᴠᴀʟɪᴅ, ᴏʀ ᴛʜᴇ ʙᴏᴛ ᴍᴀʏ ɴᴏᴛ ʜᴀᴠᴇ ᴛʜᴇ ɴᴇᴄᴇssᴀʀʏ ᴘᴇʀᴍɪssɪᴏɴs. {invalid_ids} Cʜᴀɴɴᴇʟs cᴀɴ ɴᴏᴛ ғᴜɴᴄᴛɪᴏɴ ᴀs 'FᴏʀᴄᴇSᴜʙ' ʙᴜᴛᴛᴏɴ. Tᴏ ᴇɴᴀʙʟᴇ ᴛʜᴇ 'FᴏʀᴄᴇSᴜʙ' ғᴜɴᴄᴛɪᴏɴᴀʟɪᴛʏ ғᴏʀ {invalid_ids} ᴄʜᴀɴɴᴇʟs, ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴠᴀʟɪᴅ IDs ᴏʀ ᴇɴsᴜʀᴇ ᴛʜᴇ ʙᴏᴛ ʜᴀs ᴛʜᴇ ᴀᴘᴘʀᴏᴘʀɪᴀᴛᴇ ᴘᴇʀᴍɪssɪᴏɴs.")
 
         self.CHANNEL_LIST = valid_chat_ids
         self.FSUB_BUTTONS = global_buttons

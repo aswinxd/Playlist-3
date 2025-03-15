@@ -1,4 +1,3 @@
-# +++ Made By King [telegram username: @Shidoteshika1] +++
 
 import os
 import sys
@@ -103,7 +102,7 @@ async def start_command(client: Client, message: Message):
                 asyncio.create_task(auto_del_notification(client.username, last_message, DEL_TIMER, message.command[1]))
                         
     else:   
-        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('🤖 Aʙᴏᴜᴛ ᴍᴇ', callback_data= 'about'), InlineKeyboardButton('Sᴇᴛᴛɪɴɢs ⚙️', callback_data='setting')]])
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('@PlaylistUHD', url= 't.me/PlaylistUhD')]])
 
         await message.reply_photo(
             photo = random.choice(PICS),
@@ -120,17 +119,11 @@ async def start_command(client: Client, message: Message):
         try: await message.delete()
         except: pass
 
-   
-##===================================================================================================================##
-
-#TRIGGRED START MESSAGE FOR HANDLE FORCE SUB MESSAGE AND FORCE SUB CHANNEL IF A USER NOT JOINED A CHANNEL
-
-##===================================================================================================================##   
 
 
 @Bot.on_message(filters.command('start') & filters.private & ~banUser)
 async def not_joined(client: Client, message: Message):
-    temp = await message.reply(f"<i><b>Cʜᴇᴄᴋɪɴɢ...</b></i>")
+    temp = await message.reply(f"<i><b>checking...</b></i>")
     
     try:
         if not client.REQFSUB:
@@ -144,7 +137,7 @@ async def not_joined(client: Client, message: Message):
             buttons.extend([chat_button for chat_id, chat_button in client.REQ_FSUB_BUTTONS['request'].items() if not await kingdb.reqSent_user_exist(chat_id, user_id)])
                                              
         try:
-            buttons.append([InlineKeyboardButton(text='♻️ Tʀʏ Aɢᴀɪɴ', url=f"https://t.me/{client.username}?start={message.command[1]}")])
+            buttons.append([InlineKeyboardButton(text='Try again', url=f"https://t.me/{client.username}?start={message.command[1]}")])
         except IndexError:
             pass
                      
@@ -164,26 +157,21 @@ async def not_joined(client: Client, message: Message):
                         
     except Exception as e:
         print(f"Unable to perform forcesub buttons reason : {e}")
-        return await temp.edit(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i>\n<blockquote expandable>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+        return await temp.edit(f"Error unable to do it")
 
 
 
-#=====================================================================================##
-#......... RESTART COMMAND FOR RESTARTING BOT .......#
-#=====================================================================================##
+
 
 @Bot.on_message(filters.command('restart') & filters.private & filters.user(OWNER_ID))
 async def restart_bot(client: Client, message: Message):
     print("Restarting bot...")
-    msg = await message.reply(text=f"<b><i><blockquote>⚠️ {client.name} ɢᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>")
+    msg = await message.reply(text=f"Restarting")
     try:
-        await asyncio.sleep(6)  # Wait for 6 seconds before restarting
+        await asyncio.sleep(6)  
         await msg.delete()
-        args = [sys.executable, "main.py"]  # Adjust this if your start file is named differently
+        args = [sys.executable, "main.py"] 
         os.execl(sys.executable, *args)
     except Exception as e:
         print(f"Error occured while Restarting the bot: {e}")
-        return await msg.edit_text(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @Shidoteshika1</i></b>\n<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
-    # Optionally, you can add cleanup tasks here
-    #subprocess.Popen([sys.executable, "main.py"])  # Adjust this if your start file is named differently
-    #sys.exit()
+        return await msg.edit_text(f"Contact developer")

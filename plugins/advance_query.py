@@ -9,16 +9,16 @@ from plugins.autoDelete import convert_time
 from database.database import kingdb
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto, ReplyKeyboardMarkup, ReplyKeyboardRemove    
 
-#File setting function for retriveing modes and state of file related setting
+
 async def fileSettings(getfunc, setfunc=None, delfunc=False) :
     btn_mode, txt_mode, pic_mode = '❌', off_txt, off_pic
-    del_btn_mode = 'Eɴᴀʙʟᴇ Mᴏᴅᴇ ✅'
+    del_btn_mode = 'Enable mode true'
     try:
         if not setfunc:
             if await getfunc():
                 txt_mode = on_txt    
                 btn_mode = '✅'
-                del_btn_mode = 'Dɪsᴀʙʟᴇ Mᴏᴅᴇ ❌'
+                del_btn_mode = 'Disable mode false'
         
             return txt_mode, (del_btn_mode if delfunc else btn_mode)
             
@@ -29,7 +29,7 @@ async def fileSettings(getfunc, setfunc=None, delfunc=False) :
                 await setfunc(True)
                 pic_mode, txt_mode = on_pic, on_txt
                 btn_mode = '✅'
-                del_btn_mode = 'Dɪsᴀʙʟᴇ Mᴏᴅᴇ ❌'
+                del_btn_mode = 'Disable mode false'
                 
             return pic_mode, txt_mode, (del_btn_mode if delfunc else btn_mode)
             
@@ -40,30 +40,29 @@ async def fileSettings(getfunc, setfunc=None, delfunc=False) :
 def buttonStatus(pc_data: str, hc_data: str, cb_data: str) -> list:
     button = [
         [
-            InlineKeyboardButton(f'Pʀᴏᴛᴇᴄᴛ Cᴏɴᴛᴇɴᴛ: {pc_data}', callback_data='pc'),
-            InlineKeyboardButton(f'Hɪᴅᴇ Cᴀᴘᴛɪᴏɴ: {hc_data}', callback_data='hc')
+            InlineKeyboardButton(f'Protect content: {pc_data}', callback_data='pc'),
+            InlineKeyboardButton(f'Hide caption: {hc_data}', callback_data='hc')
         ],
         [
-            InlineKeyboardButton(f'Cʜᴀɴɴᴇʟ Bᴜᴛᴛᴏɴ: {cb_data}', callback_data='cb'), 
-            InlineKeyboardButton(f'◈ Sᴇᴛ Bᴜᴛᴛᴏɴ ➪', callback_data='setcb')
+            InlineKeyboardButton(f'Channel captipn: {cb_data}', callback_data='cb'), 
+            InlineKeyboardButton(f'Set button', callback_data='setcb')
         ],
         [
-            InlineKeyboardButton('🔄 Rᴇғʀᴇsʜ', callback_data='files_cmd'), 
-            InlineKeyboardButton('Cʟᴏsᴇ ✖️', callback_data='close')
+            InlineKeyboardButton('Refresh', callback_data='files_cmd'), 
+            InlineKeyboardButton('Close ', callback_data='close')
         ],
     ]
     return button
 
-#Verify user, if he/she is admin or owner before processing the query...
 async def authoUser(query, id, owner_only=False):
     if not owner_only:
         if not any([id == OWNER_ID, await kingdb.admin_exist(id)]):
-            await query.answer("❌ Yᴏᴜ ᴀʀᴇ ɴᴏᴛ Aᴅᴍɪɴ !", show_alert=True)
+            await query.answer("you are not admin", show_alert=True)
             return False
         return True
     else:
         if id != OWNER_ID:
-            await query.answer("❌ Yᴏᴜ ᴀʀᴇ ɴᴏᴛ Oᴡɴᴇʀ !", show_alert=True)
+            await query.answer("you are not owner", show_alert=True)
             return False
         return True
 
@@ -89,7 +88,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                             )
             ),
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('⬅️ Bᴀᴄᴋ', callback_data='start'), InlineKeyboardButton('Cʟᴏsᴇ ✖️', callback_data='close')]
+                [InlineKeyboardButton('Back', callback_data='start'), InlineKeyboardButton('Close ', callback_data='close')]
             ]),
         )
         
@@ -119,7 +118,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                                 )
                 ),
                 reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('⬅️ Bᴀᴄᴋ', callback_data='start'), InlineKeyboardButton('Cʟᴏsᴇ ✖️', callback_data='close')]
+                [InlineKeyboardButton('Back', callback_data='start'), InlineKeyboardButton('Close ', callback_data='close')]
                 ]),
             )
         except Exception as e:
@@ -137,13 +136,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                             )
             ),
             reply_markup = InlineKeyboardMarkup([
-                [InlineKeyboardButton('🤖 Aʙᴏᴜᴛ ᴍᴇ', callback_data='about'), InlineKeyboardButton('Sᴇᴛᴛɪɴɢs ⚙️', callback_data='setting')]
+                [InlineKeyboardButton('@PlaylistUHD', url='t.me/PlaylistUHD')]
             ]),
         )
         
     elif data == "files_cmd":
         if await authoUser(query, query.from_user.id) : 
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 protect_content, pcd = await fileSettings(kingdb.get_protect_content)
@@ -168,7 +167,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             
     elif data == "pc":
         if await authoUser(query, query.from_user.id) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 pic, protect_content, pcd = await fileSettings(kingdb.get_protect_content, kingdb.set_protect_content)
@@ -193,7 +192,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 
     elif data == "hc":
         if await authoUser(query, query.from_user.id) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 protect_content, pcd = await fileSettings(kingdb.get_protect_content)
@@ -218,7 +217,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             
     elif data == "cb":
         if await authoUser(query, query.from_user.id) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 protect_content, pcd = await fileSettings(kingdb.get_protect_content)
@@ -244,36 +243,36 @@ async def cb_handler(client: Bot, query: CallbackQuery):
     elif data == "setcb":
         id = query.from_user.id
         if await authoUser(query, id) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 button_name, button_link = await kingdb.get_channel_button_link()
             
                 button_preview = [[InlineKeyboardButton(text=button_name, url=button_link)]]  
-                set_msg = await client.ask(chat_id = id, text=f'<b>Tᴏ ᴄʜᴀɴɢᴇ ᴛʜᴇ ʙᴜᴛᴛᴏɴ, Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ᴀʀɢᴜᴍᴇɴᴛs ᴡɪᴛʜɪɴ 1 ᴍɪɴᴜᴛᴇ.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ:\n<blockquote><code>Join Channel - https://t.me/btth480p</code></blockquote>\n\n<i>Bᴇʟᴏᴡ ɪs ʙᴜᴛᴛᴏɴ Pʀᴇᴠɪᴇᴡ ⬇️</i></b>', timeout=60, reply_markup=InlineKeyboardMarkup(button_preview), disable_web_page_preview = True)
+                set_msg = await client.ask(chat_id = id, text=f'<b>Tᴏ ᴄʜᴀɴɢᴇ ᴛʜᴇ ʙᴜᴛᴛᴏɴ, Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ᴀʀɢᴜᴍᴇɴᴛs ᴡɪᴛʜɪɴ 1 ᴍɪɴᴜᴛᴇ.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ:\n<code>Join Channel - https://t.me/btth480p</code>\n\n<i>Bᴇʟᴏᴡ ɪs ʙᴜᴛᴛᴏɴ Pʀᴇᴠɪᴇᴡ ⬇️</i></b>', timeout=60, reply_markup=InlineKeyboardMarkup(button_preview), disable_web_page_preview = True)
                 button = set_msg.text.split(' - ')
                 
                 if len(button) != 2:
                     markup = [[InlineKeyboardButton(f'◈ Sᴇᴛ Cʜᴀɴɴᴇʟ Bᴜᴛᴛᴏɴ ➪', callback_data='setcb')]]
-                    return await set_msg.reply("<b>Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ᴀʀɢᴜᴍᴇɴᴛs.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ:\n<blockquote><code>Join Channel - https://t.me/btth480p</code></blockquote>\n\n<i>Tʀʏ ᴀɢᴀɪɴ ʙʏ ᴄʟɪᴄᴋɪɴɢ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ..</i></b>", reply_markup=InlineKeyboardMarkup(markup), disable_web_page_preview = True)
+                    return await set_msg.reply("<b>Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ᴀʀɢᴜᴍᴇɴᴛs.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ:\n<code>Join Channel - https://t.me/btth480p</code>\n\n<i>Tʀʏ ᴀɢᴀɪɴ ʙʏ ᴄʟɪᴄᴋɪɴɢ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ..</i></b>", reply_markup=InlineKeyboardMarkup(markup), disable_web_page_preview = True)
                 
                 button_name = button[0].strip(); button_link = button[1].strip()
                 button_preview = [[InlineKeyboardButton(text=button_name, url=button_link)]]
                 
-                await set_msg.reply("<b><i>Aᴅᴅᴇᴅ Sᴜᴄcᴇssғᴜʟʟʏ ✅</i>\n<blockquote>Sᴇᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴀs Pʀᴇᴠɪᴇᴡ ⬇️</blockquote></b>", reply_markup=InlineKeyboardMarkup(button_preview))
+                await set_msg.reply("<b><i>Aᴅᴅᴇᴅ Sᴜᴄcᴇssғᴜʟʟʏ ✅</i>\nSᴇᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴀs Pʀᴇᴠɪᴇᴡ ⬇️</b>", reply_markup=InlineKeyboardMarkup(button_preview))
                 await kingdb.set_channel_button_link(button_name, button_link)
                 return
             except Exception as e:
                 try:
-                    await set_msg.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+                    await set_msg.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\nRᴇᴀsᴏɴ:</b> {e}")
                     print(f"! Error Occured on callback data = 'setcb' : {e}")
                 except:
-                    await client.send_message(id, text=f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote><i>Rᴇᴀsᴏɴ: 1 minute Time out ..</i></b></blockquote>", disable_notification=True)
+                    await client.send_message(id, text=f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<i>Rᴇᴀsᴏɴ: 1 minute Time out ..</i></b>", disable_notification=True)
                     print(f"! Error Occured on callback data = 'setcb' -> Rᴇᴀsᴏɴ: 1 minute Time out ..")
 
     elif data == 'autodel_cmd':
         if await authoUser(query, query.from_user.id, owner_only=True) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....") 
+            await query.answer("Processing...") 
                 
             try:
                 timer = convert_time(await kingdb.get_del_timer())
@@ -288,7 +287,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                     ),
                     reply_markup = InlineKeyboardMarkup([
                         [InlineKeyboardButton(mode, callback_data='chng_autodel'), InlineKeyboardButton('◈ Sᴇᴛ Tɪᴍᴇʀ ⏱', callback_data='set_timer')],
-                        [InlineKeyboardButton('🔄 Rᴇғʀᴇsʜ', callback_data='autodel_cmd'), InlineKeyboardButton('Cʟᴏsᴇ ✖️', callback_data='close')]
+                        [InlineKeyboardButton('🔄 Rᴇғʀᴇsʜ', callback_data='autodel_cmd'), InlineKeyboardButton('Close ', callback_data='close')]
                     ])
                 )
             except Exception as e:
@@ -296,7 +295,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             
     elif data == 'chng_autodel':
         if await authoUser(query, query.from_user.id, owner_only=True) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            await query.answer("Processing...")
                 
             try:
                 timer = convert_time(await kingdb.get_del_timer())
@@ -311,7 +310,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                     ),
                     reply_markup = InlineKeyboardMarkup([
                         [InlineKeyboardButton(mode, callback_data='chng_autodel'), InlineKeyboardButton('◈ Sᴇᴛ Tɪᴍᴇʀ ⏱', callback_data='set_timer')],
-                        [InlineKeyboardButton('🔄 Rᴇғʀᴇsʜ', callback_data='autodel_cmd'), InlineKeyboardButton('Cʟᴏsᴇ ✖️', callback_data='close')]
+                        [InlineKeyboardButton('🔄 Rᴇғʀᴇsʜ', callback_data='autodel_cmd'), InlineKeyboardButton('Close ', callback_data='close')]
                     ])
                 )
             except Exception as e:
@@ -323,29 +322,29 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             try:
                 
                 timer = convert_time(await kingdb.get_del_timer())
-                set_msg = await client.ask(chat_id=id, text=f'<b><blockquote>⏱ Cᴜʀʀᴇɴᴛ Tɪᴍᴇʀ: {timer}</blockquote>\n\nTᴏ ᴄʜᴀɴɢᴇ ᴛɪᴍᴇʀ, Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ ɪɴ sᴇᴄᴏɴᴅs ᴡɪᴛʜɪɴ 1 ᴍɪɴᴜᴛᴇ.\n<blockquote>Fᴏʀ ᴇxᴀᴍᴘʟᴇ: <code>300</code>, <code>600</code>, <code>900</code></b></blockquote>', timeout=60)
+                set_msg = await client.ask(chat_id=id, text=f'<b>⏱ Cᴜʀʀᴇɴᴛ Tɪᴍᴇʀ: {timer}\n\nTᴏ ᴄʜᴀɴɢᴇ ᴛɪᴍᴇʀ, Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ ɪɴ sᴇᴄᴏɴᴅs ᴡɪᴛʜɪɴ 1 ᴍɪɴᴜᴛᴇ.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ: <code>300</code>, <code>600</code>, <code>900</code></b>', timeout=60)
                 del_timer = set_msg.text.split()
                 
                 if len(del_timer) == 1 and del_timer[0].isdigit():
                     DEL_TIMER = int(del_timer[0])
                     await kingdb.set_del_timer(DEL_TIMER)
                     timer = convert_time(DEL_TIMER)
-                    await set_msg.reply(f"<b><i>Aᴅᴅᴇᴅ Sᴜᴄcᴇssғᴜʟʟʏ ✅</i>\n<blockquote>⏱ Cᴜʀʀᴇɴᴛ Tɪᴍᴇʀ: {timer}</blockquote></b>")
+                    await set_msg.reply(f"<b><i>Aᴅᴅᴇᴅ Sᴜᴄcᴇssғᴜʟʟʏ ✅</i>\n⏱ Cᴜʀʀᴇɴᴛ Tɪᴍᴇʀ: {timer}</b>")
                 else:
                     markup = [[InlineKeyboardButton('◈ Sᴇᴛ Dᴇʟᴇᴛᴇ Tɪᴍᴇʀ ⏱', callback_data='set_timer')]]
-                    return await set_msg.reply("<b>Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ ɪɴ sᴇᴄᴏɴᴅs.\n<blockquote>Fᴏʀ ᴇxᴀᴍᴘʟᴇ: <code>300</code>, <code>600</code>, <code>900</code></blockquote>\n\n<i>Tʀʏ ᴀɢᴀɪɴ ʙʏ ᴄʟɪᴄᴋɪɴɢ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ..</i></b>", reply_markup=InlineKeyboardMarkup(markup))
+                    return await set_msg.reply("<b>Pʟᴇᴀsᴇ sᴇɴᴅ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ ɪɴ sᴇᴄᴏɴᴅs.\nFᴏʀ ᴇxᴀᴍᴘʟᴇ: <code>300</code>, <code>600</code>, <code>900</code>\n\n<i>Tʀʏ ᴀɢᴀɪɴ ʙʏ ᴄʟɪᴄᴋɪɴɢ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ..</i></b>", reply_markup=InlineKeyboardMarkup(markup))
     
             except Exception as e:
                 try:
-                    await set_msg.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+                    await set_msg.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\nRᴇᴀsᴏɴ:</b> {e}")
                     print(f"! Error Occured on callback data = 'set_timer' : {e}")
                 except:
-                    await client.send_message(id, text=f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<blockquote><i>Rᴇᴀsᴏɴ: 1 minute Time out ..</i></b></blockquote>", disable_notification=True)
+                    await client.send_message(id, text=f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ..\n<i>Rᴇᴀsᴏɴ: 1 minute Time out ..</i></b>", disable_notification=True)
                     print(f"! Error Occured on callback data = 'set_timer' -> Rᴇᴀsᴏɴ: 1 minute Time out ..")
 
     elif data == 'chng_req':
         if await authoUser(query, query.from_user.id, owner_only=True) :
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            await query.answer("Processing...")
         
             try:
                 on = off = ""
@@ -372,7 +371,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
     elif data == 'more_settings':
         if await authoUser(query, query.from_user.id, owner_only=True) :
-            #await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            #await query.answer("Processing...")
             try:
                 await query.message.edit_text("<b>Pʟᴇᴀsᴇ wᴀɪᴛ !\n\n<i>🔄 Rᴇᴛʀɪᴇᴠɪɴɢ ᴀʟʟ Sᴇᴛᴛɪɴɢs...</i></b>")
                 LISTS = "Eᴍᴘᴛʏ Rᴇǫᴜᴇsᴛ FᴏʀᴄᴇSᴜʙ Cʜᴀɴɴᴇʟ Lɪsᴛ !?"
@@ -401,7 +400,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 buttons = [
                     [InlineKeyboardButton("ᴄʟᴇᴀʀ ᴜsᴇʀs", "clear_users"), InlineKeyboardButton("cʟᴇᴀʀ cʜᴀɴɴᴇʟs", "clear_chnls")],
                     [InlineKeyboardButton("♻️  Rᴇғʀᴇsʜ Sᴛᴀᴛᴜs  ♻️", "more_settings")],
-                    [InlineKeyboardButton("⬅️ Bᴀᴄᴋ", "req_fsub"), InlineKeyboardButton("Cʟᴏsᴇ ✖️", "close")]
+                    [InlineKeyboardButton("Back", "req_fsub"), InlineKeyboardButton("Close ", "close")]
                 ]
                 await query.message.reply_chat_action(ChatAction.CANCEL)
                 await query.message.edit_text(text=RFSUB_MS_TXT.format(reqfsub_list=LISTS.strip()), reply_markup=InlineKeyboardMarkup(buttons))
@@ -412,13 +411,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
     elif data == 'clear_users':
         #if await authoUser(query, query.from_user.id, owner_only=True) :
-        #await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")    
+        #await query.answer("Processing...")    
         try:
             REQFSUB_CHNLS = await kingdb.get_reqChannel()
             if not REQFSUB_CHNLS:
                 return await query.answer("Eᴍᴘᴛʏ Rᴇǫᴜᴇsᴛ FᴏʀᴄᴇSᴜʙ Cʜᴀɴɴᴇʟ !?", show_alert=True)
 
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            await query.answer("Processing...")
                 
             REQFSUB_CHNLS = list(map(str, REQFSUB_CHNLS))    
             buttons = [REQFSUB_CHNLS[i:i+2] for i in range(0, len(REQFSUB_CHNLS), 2)]
@@ -433,20 +432,20 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             elif user_reply.text in REQFSUB_CHNLS:
                 try:
                     await kingdb.clear_reqSent_user(int(user_reply.text))
-                    return await user_reply.reply(f"<b><blockquote>✅ Usᴇʀ Dᴀᴛᴀ Sᴜᴄᴄᴇssғᴜʟʟʏ Cʟᴇᴀʀᴇᴅ ғʀᴏᴍ Cʜᴀɴɴᴇʟ ɪᴅ: <code>{user_reply.text}</code></blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>✅ Usᴇʀ Dᴀᴛᴀ Sᴜᴄᴄᴇssғᴜʟʟʏ Cʟᴇᴀʀᴇᴅ ғʀᴏᴍ Cʜᴀɴɴᴇʟ ɪᴅ: <code>{user_reply.text}</code></b>", reply_markup=ReplyKeyboardRemove())
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             elif user_reply.text == 'DELETE ALL CHANNELS USER':
                 try:
                     for CHNL in REQFSUB_CHNLS:
                         await kingdb.clear_reqSent_user(int(CHNL))
-                    return await user_reply.reply(f"<b><blockquote>✅ Usᴇʀ Dᴀᴛᴀ Sᴜᴄᴄᴇssғᴜʟʟʏ Cʟᴇᴀʀᴇᴅ ғʀᴏᴍ Aʟʟ Cʜᴀɴɴᴇʟ ɪᴅs</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>✅ Usᴇʀ Dᴀᴛᴀ Sᴜᴄᴄᴇssғᴜʟʟʏ Cʟᴇᴀʀᴇᴅ ғʀᴏᴍ Aʟʟ Cʜᴀɴɴᴇʟ ɪᴅs</b>", reply_markup=ReplyKeyboardRemove())
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             else:
-                return await user_reply.reply(f"<b><blockquote>INVALID SELECTIONS</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                return await user_reply.reply(f"<b>INVALID SELECTIONS</b>", reply_markup=ReplyKeyboardRemove())
             
         except Exception as e:
             print(f"! Error Occured on callback data = 'clear_users' : {e}")
@@ -460,7 +459,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             if not REQFSUB_CHNLS:
                 return await query.answer("Eᴍᴘᴛʏ Rᴇǫᴜᴇsᴛ FᴏʀᴄᴇSᴜʙ Cʜᴀɴɴᴇʟ !?", show_alert=True)
             
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            await query.answer("Processing...")
                 
             REQFSUB_CHNLS = list(map(str, REQFSUB_CHNLS))    
             buttons = [REQFSUB_CHNLS[i:i+2] for i in range(0, len(REQFSUB_CHNLS), 2)]
@@ -483,9 +482,9 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
                     await kingdb.del_stored_reqLink(chnl_id)
 
-                    return await user_reply.reply(f"<b><blockquote><code>{user_reply.text}</code> Cʜᴀɴɴᴇʟ ɪᴅ ᴀʟᴏɴɢ ᴡɪᴛʜ ɪᴛs ᴅᴀᴛᴀ sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b><code>{user_reply.text}</code> Cʜᴀɴɴᴇʟ ɪᴅ ᴀʟᴏɴɢ ᴡɪᴛʜ ɪᴛs ᴅᴀᴛᴀ sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</b>", reply_markup=ReplyKeyboardRemove())
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             elif user_reply.text == 'DELETE ALL CHANNEL IDS':
                 try:
@@ -499,13 +498,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
                         await kingdb.del_stored_reqLink(chnl)
 
-                    return await user_reply.reply(f"<b><blockquote>Aʟʟ Cʜᴀɴɴᴇʟ ɪᴅs ᴀʟᴏɴɢ ᴡɪᴛʜ ɪᴛs ᴅᴀᴛᴀ sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>Aʟʟ Cʜᴀɴɴᴇʟ ɪᴅs ᴀʟᴏɴɢ ᴡɪᴛʜ ɪᴛs ᴅᴀᴛᴀ sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</b>", reply_markup=ReplyKeyboardRemove())
                 
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             else:
-                return await user_reply.reply(f"<b><blockquote>INVALID SELECTIONS</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                return await user_reply.reply(f"<b>INVALID SELECTIONS</b>", reply_markup=ReplyKeyboardRemove())
             
         except Exception as e:
             print(f"! Error Occured on callback data = 'more_settings' : {e}")
@@ -513,15 +512,14 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
 
     elif data == 'clear_links':
-        #if await authoUser(query, query.from_user.id, owner_only=True) :
-        #await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+
             
         try:
             REQFSUB_CHNLS = await kingdb.get_reqLink_channels()
             if not REQFSUB_CHNLS:
                 return await query.answer("Nᴏ Sᴛᴏʀᴇᴅ Rᴇǫᴜᴇsᴛ Lɪɴᴋ Aᴠᴀɪʟᴀʙʟᴇ !?", show_alert=True)
 
-            await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+            await query.answer("Processing...")
                 
             REQFSUB_CHNLS = list(map(str, REQFSUB_CHNLS))    
             buttons = [REQFSUB_CHNLS[i:i+2] for i in range(0, len(REQFSUB_CHNLS), 2)]
@@ -540,15 +538,15 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                         await client.revoke_chat_invite_link(channel_id, await kingdb.get_stored_reqLink(channel_id))
                     except:
                         text = """<b>❌ Uɴᴀʙʟᴇ ᴛᴏ Rᴇᴠᴏᴋᴇ ʟɪɴᴋ !
-<blockquote expandable>ɪᴅ: <code>{}</code></b>
-<i>Eɪᴛʜᴇʀ ᴛʜᴇ ʙᴏᴛ ɪs ɴᴏᴛ ɪɴ ᴀʙᴏᴠᴇ ᴄʜᴀɴɴᴇʟ Oʀ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘʀᴏᴘᴇʀ ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs</i></blockquote>"""
+ expandable>ɪᴅ: <code>{}</code></b>
+<i>Eɪᴛʜᴇʀ ᴛʜᴇ ʙᴏᴛ ɪs ɴᴏᴛ ɪɴ ᴀʙᴏᴠᴇ ᴄʜᴀɴɴᴇʟ Oʀ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘʀᴏᴘᴇʀ ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs</i>"""
                         return await user_reply.reply(text=text.format(channel_id), reply_markup=ReplyKeyboardRemove())
                         
                     await kingdb.del_stored_reqLink(channel_id)
-                    return await user_reply.reply(f"<b><blockquote><code>{channel_id}</code> Cʜᴀɴɴᴇʟs Lɪɴᴋ Sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b><code>{channel_id}</code> Cʜᴀɴɴᴇʟs Lɪɴᴋ Sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇʟᴇᴛᴇᴅ ✅</b>", reply_markup=ReplyKeyboardRemove())
                 
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             elif user_reply.text == 'DELETE ALL REQUEST LINKS':
                 try:
@@ -558,18 +556,18 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                         try:
                             await client.revoke_chat_invite_link(channel_id, await kingdb.get_stored_reqLink(channel_id))
                         except:
-                            result += f"<blockquote expandable><b><code>{channel_id}</code> Uɴᴀʙʟᴇ ᴛᴏ Rᴇᴠᴏᴋᴇ ❌</b>\n<i>Eɪᴛʜᴇʀ ᴛʜᴇ ʙᴏᴛ ɪs ɴᴏᴛ ɪɴ ᴀʙᴏᴠᴇ ᴄʜᴀɴɴᴇʟ Oʀ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘʀᴏᴘᴇʀ ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs.</i></blockquote>\n"
+                            result += f" expandable><b><code>{channel_id}</code> Uɴᴀʙʟᴇ ᴛᴏ Rᴇᴠᴏᴋᴇ ❌</b>\n<i>Eɪᴛʜᴇʀ ᴛʜᴇ ʙᴏᴛ ɪs ɴᴏᴛ ɪɴ ᴀʙᴏᴠᴇ ᴄʜᴀɴɴᴇʟ Oʀ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘʀᴏᴘᴇʀ ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs.</i>\n"
                             continue
                         await kingdb.del_stored_reqLink(channel_id)
-                        result += f"<blockquote><b><code>{channel_id}</code> IDs Lɪɴᴋ Dᴇʟᴇᴛᴇᴅ ✅</b></blockquote>\n"
+                        result += f"<b><code>{channel_id}</code> IDs Lɪɴᴋ Dᴇʟᴇᴛᴇᴅ ✅</b>\n"
                         
                     return await user_reply.reply(f"<b>⁉️ Oᴘᴇʀᴀᴛɪᴏɴ Rᴇsᴜʟᴛ:</b>\n{result.strip()}", reply_markup=ReplyKeyboardRemove())
  
                 except Exception as e:
-                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\n<blockquote>Rᴇᴀsᴏɴ:</b> {e}</blockquote>", reply_markup=ReplyKeyboardRemove())
+                    return await user_reply.reply(f"<b>! Eʀʀᴏʀ Oᴄᴄᴜʀᴇᴅ...\nRᴇᴀsᴏɴ:</b> {e}", reply_markup=ReplyKeyboardRemove())
                     
             else:
-                return await user_reply.reply(f"<b><blockquote>INVALID SELECTIONS</blockquote></b>", reply_markup=ReplyKeyboardRemove())
+                return await user_reply.reply(f"<b>INVALID SELECTIONS</b>", reply_markup=ReplyKeyboardRemove())
             
         except Exception as e:
             print(f"! Error Occured on callback data = 'more_settings' : {e}")
@@ -577,7 +575,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
     elif data == 'req_fsub':
         #if await authoUser(query, query.from_user.id, owner_only=True) :
-        await query.answer("♻️ Qᴜᴇʀʏ Pʀᴏᴄᴇssɪɴɢ....")
+        await query.answer("Processing...")
     
         try:
             on = off = ""
